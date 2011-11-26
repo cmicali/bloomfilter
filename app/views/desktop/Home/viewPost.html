@@ -1,0 +1,53 @@
+#{extends 'desktop/templates/main.html' /}
+#{set title:'bloomfilter' /}
+<div class="content">
+    <div class="row">
+        <div class="span14">
+
+            <div class="article viewpost">
+                <h3><a href="${post.link}">${post.title}</a> <span class="domain">${post.domain}</span></h3>
+                <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.name}</a> ${post.friendlyPostDate}</span>
+            </div>
+
+        #{list items:post.comments, as:'comment'}
+        #{comment comment:comment /}
+        #{/list}
+
+        #{if session.username}
+        <hr/>
+        *{<button class="btn" value="Post Comment" id="postbutton">Post Comment</button>}*
+
+        <div id="commentpanel">
+            <form action="@{desktop.Post.submitNewComment}" method="post">
+                <fieldset>
+                    #{mdtextarea name:'comment', title:'Comment', optional: false/}
+                    <input type="submit" class="btn primary" value="Post Comment">
+                    <button class="btn" onclick="return false;" id="cancelbutton">Cancel</button>
+                    <input type="hidden" name="postId" value="${post.id}" />
+                </fieldset>
+            </form>
+        </div>
+        #{/if}
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" language="JavaScript">
+
+$(document).ready(function(){
+
+//    $('#commentpanel').hide();
+//    $('#postbutton').click(function() {
+//        $('#postbutton').hide();
+//        $('#commentpanel').show();
+//    });
+//    $('#cancelbutton').click(function() {
+//        $('#postbutton').show();
+//        $('#commentpanel').hide();
+//    });
+});
+
+</script>

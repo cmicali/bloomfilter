@@ -1,0 +1,102 @@
+#{extends 'desktop/templates/main.html' /}
+#{set title:'bloomfilter' /}
+<div class="content">
+    <div class="row">
+        <div class="span14">
+
+            <h2>New Post</h2>
+
+        *{#{ifErrors}}*
+           *{<div class="alert-message error">}*
+             *{<p>Oops.. </p>}*
+           *{</div>}*
+        *{#{/ifErrors}}*
+
+            <form action="@{desktop.Post.submitNewPost}" method="post">
+                <fieldset>
+                    <div class="clearfix#{ifError 'title'} error#{/ifError}" id="titleContainer">
+                        <label for="title">Title</label>
+                        <div class="input">
+                            <input class="span4" id="title" name="title" size="30" type="text" value="${flash.title}">
+                            <span class="help-inline" id="validateTitleMessage">#{error 'title'/}</span>
+                        </div>
+                    </div>
+                    <div class="clearfix#{ifError 'url'} error#{/ifError}" id="urlContainer">
+                        <label for="title">Url</label>
+                        <div class="input">
+                            <input class="span8" id="url" name="url" size="768" type="text" value="${flash.url}">
+                            <span class="help-inline" id="validateUrlMessage">#{error 'url'/}</span>
+                        </div>
+                    </div>
+
+                    #{mdtextarea name:'comment', title:'Comment', optional: true, showLabel: true /}
+                    *{<div class="clearfix#{ifError 'comment'} error#{/ifError}" id="commentContainer">}*
+                        *{<label for="title">Comment<br/></label>}*
+                        *{<div class="input">}*
+                            *{<textarea class="span8" name="comment" id="comment" rows="5" ></textarea>}*
+                            *{<span class="help-inline" id="validateCommentMessage">#{error 'comment'/}</span>}*
+                        *{</div>}*
+                    *{</div>}*
+                    <div class="actions">
+                        <input type="submit" class="btn primary" value="Submit">
+                   </div>
+                </fieldset>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+
+$(document).ready(function(){
+    var request = 0;
+    var validateUrlMessage = $('#validateUrlMessage');
+
+    $('#title').keyup(function () {
+        if (this.value.length > 0) {
+            $('#validateTitleMessage').html("");
+            $('#titleContainer').removeClass("error");
+        }
+        else {
+            $('#validateTitleMessage').html("Required");
+            $('#titleContainer').addClass("error");
+        }
+    });
+
+    $('#url').keyup(function () {
+      var t = this;
+      if (this.value.length < 11) return;
+      if (this.value != this.lastValue) {
+        if (this.timer) clearTimeout(this.timer);
+        request++;
+        this.timer = setTimeout(function () {
+          var req = request;
+          $.ajax({
+            url: '/api/posts/validateurl?url=' + t.value,
+            dataType: 'json',
+            type: 'get',
+            success: function (j) {
+                if (req == request) {
+                    if (j.response.valid) {
+                        validateUrlMessage.html("");
+                        $('#urlContainer').removeClass("error");
+                    }
+                    else {
+                        validateUrlMessage.html(j.response.message);
+                        $('#urlContainer').addClass("error");
+                    }
+                }
+              // validateUsername.html(j.msg);
+            }
+          });
+        }, 350);
+        this.lastValue = this.value;
+      }
+    });
+
+
+});
+
+</script>

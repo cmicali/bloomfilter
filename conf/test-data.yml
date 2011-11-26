@@ -1,0 +1,28 @@
+User(cmicali):
+  name:         Chris Micali
+  first_name:   Chris
+  last_name:    Micali
+  facebook_id:  534910201
+  facebook_username: chrismicali
+  username:     chrismicali
+  email:        chrismicali@gmail.com
+  gender:       male
+  locale:       en-US
+
+Post(post1):
+    author: cmicali
+    title: How Spotify Works
+    link: http://pansentient.com/2011/04/spotify-technology-some-stats-and-how-spotify-works/
+    date_created: 2011-11-25 9:00
+
+Post(post2):
+    author: cmicali
+    title: Reddit
+    link: http://reddit.com
+    date_created: 2011-11-24 9:00
+
+Post(post3):
+    author: cmicali
+    title: Google
+    link: http://www.google.com
+    date_created: 2011-11-22 9:00

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+    <head>
+        <title>#{get 'title' /}</title>
+
+        <meta charset="${_response_encoding}">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+            
+        <link rel="stylesheet" media="screen" href="@{'/public/desktop/css/bootstrap/bootstrap.less'}">
+        <link rel="stylesheet" media="screen" href="@{'/public/desktop/css/main.css'}">
+        #{get 'moreStyles' /}
+
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+            
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/desktop/js/main.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/desktop/js/Markdown.Converter.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/desktop/js/Markdown.Sanitizer.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+        <script src="@{'/public/desktop/js/Markdown.Editor.js'}" type="text/javascript" charset="${_response_encoding}"></script>
+
+        #{get 'moreScripts' /}
+        <script type="text/javascript">
+            var bloomfilter = window.bloomfilter || {};
+
+            %{
+                fbAppId = play.configuration.getProperty("facebook.appId");
+                fbPerms = play.configuration.getProperty("facebook.perms");
+            }%
+
+            bloomfilter.fbAppId = '${fbAppId}';
+            bloomfilter.fbPerms = '${fbPerms}';
+
+            window.fbAsyncInit = function() {
+                FB.init({   appId: bloomfilter.fbAppId,
+                            status: true,
+                            cookie: true,
+                            xfbml: true,
+                            channelUrl: 'http://bloomfilter.com:9000/public/ChannelFile.html',
+                            oauth: true
+                });
+                FB.getLoginStatus(function(response) {
+                    if(response.authResponse) {
+                        #{get 'facebookIsLoggedIn' /}
+                    } else {
+                        #{get 'facebookIsNotLoggedIn' /}
+                    }
+                });
+            };
+
+			function logout() {
+                    window.location = "@{desktop.Application.logout()}";
+			}
+
+            function facebookLogin() {                
+                // get current login status from facebook.com
+                FB.getLoginStatus(function(response) {
+                    if (response.authResponse) {
+                        // logged in and connected user, someone you know
+                        window.location = "@{desktop.Application.facebookLogin()}";
+                    } else {
+                        FB.login(function(response) {
+                            if (response.authResponse) {
+                                window.location = "@{desktop.Application.facebookLogin()}";
+                            } else { }
+                        }, {scope: bloomfilter.fbPerms});
+                      }
+                });
+            }
+        </script>
+    </head>
+    <body>
+
+    <div class="container">
+
+        <div id="top-nav">
+            <span class="login">
+            #{if session.username}
+                <strong>${session.userdisplayname}</strong> | <a href="/logout">logout</a>
+            #{/if}
+            #{else}
+                <a href="/login">login</a>
+            #{/else}
+            </span>
+            <h1><a href="/">bloomfilter</a></h1>
+        </div>
+
+        <div class="topbar-wrapper" style="z-index: 5;">
+           <div class="topbar">
+              <div class="topbar-inner">
+                <div class="container">
+                  <ul class="nav">
+                      *{<li><a href="/">Home</a></li>}*
+                      *{#{if session.username}}*
+                          *{<li><a href="/post">Post</a></li>}*
+                      *{#{/if}}*
+                      *{#{else}}*
+                      *{#{/else}}*
+                  </ul>
+                *{#{if session.username}}*
+                  *{<ul class="nav secondary-nav">}*
+                    *{<li class="dropdown">}*
+                        *{<a href="#" class="dropdown-toggle logged-in-user-button">}*
+                                *{<img src="${session.userpic}"/>}*
+                                *{<span>${session.userdisplayname}</span>}*
+                        *{</a>}*
+                      *{<ul class="dropdown-menu">}*
+                        *{<li><a href="#" onclick="logout();return false;">Logout</a></li>}*
+                      *{</ul>}*
+                    *{</li>}*
+                  *{</ul>}*
+                *{#{/if}}*
+                *{#{else}}*
+                *{#{/else}}*
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div id='fb-root'></div>
+        <script>
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }())
+        </script>
+
+        #{doLayout /}
+
+        <footer>
+          *{<p>&copy; 2011 bloomfilter | <a href="/about">About</a></p>}*
+        </footer>
+
+    </div></body>
+</html>

@@ -1,0 +1,60 @@
+<div id="wmd-button-bar"></div>
+<div class="clearfix#{ifError '${_name}'} error#{/ifError}" id="${_name}Container">
+    #{if _showLabel}
+    <label for="${_name}">${_title}#{if _optional}<br/><span style="color:#808080;">(optional)</span> #{/if}</label>
+    <div class="input">
+    #{/if}
+        <textarea class="span8" name="${_name}" id="wmd-input" rows="5" >${flash.comment}</textarea>
+        <span class="help-inline" id="validateCommentMessage">#{error '${_name}'/}</span>
+    #{if _showLabel}
+    </div>
+    #{/if}
+</div>
+
+<div class="clearfix#{ifError '${_name}'} error#{/ifError}" id="${_name}PreviewContainer" style="display:none;">
+    #{if _showLabel}
+    <label for="wmd-preview"><span style="color:#808080;">Preview</span></label>
+    <div class="input">
+    #{/if}
+        #{if !_showLabel}
+        <div class="preview-header">Preview</div>
+        #{/if}
+        <div class="comment preview span8">
+            <div id="wmd-preview" class="text">
+
+            </div>
+            #{if _showPostInfo}
+            <div class="info">
+                posted by <a href="/users/${session.userid}">${session.userdisplayname}</a> just now
+            </div>
+            #{/if}
+        </div>
+    #{if _showLabel}
+    </div>
+    #{/if}
+</div>
+
+<script type="text/javascript">
+    (function () {
+        var converter = Markdown.getSanitizingConverter();
+        var editor = new Markdown.Editor(converter);
+        editor.run();
+
+        var help = function () { alert("Do you need help?"); }
+
+        var comment = $('#wmd-input');
+
+        editor.hooks.chain("onPreviewRefresh", function () {
+            var preview = $('#${_name}PreviewContainer');
+            if ($('#wmd-input').val().length > 0) {
+                preview.show();
+            }
+            else {
+                preview.hide();
+            }
+        });
+
+
+    })();
+</script>
+
