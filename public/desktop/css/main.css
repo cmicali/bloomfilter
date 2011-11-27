@@ -46,6 +46,15 @@ body {
     color:#373142;
 }
 
+.post-actions,
+.post-actions a,
+.post-actions a:hover,
+.post-actions a:visited,
+.post-actions a:active
+{
+    color: #808080;
+}
+
 footer {
     margin-top: 0;
 }

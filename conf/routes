@@ -6,8 +6,8 @@ GET     /                                           desktop.Home.index
 GET     /about                                      desktop.Home.about
 GET     /bookmarklet                                desktop.Home.bookmarklet
 
-GET     /posts/{<[0-9]+>id}                         desktop.Post.viewPost
-GET     /posts/{<[0-9]+>id}_{title}                 desktop.Post.viewPost
+GET     /posts/{<[0-9]+>id}                         desktop.Home.viewPost
+GET     /posts/{<[0-9]+>id}_{title}                 desktop.Home.viewPost
 POST    /posts/submitcomment                        desktop.Post.submitNewComment
 GET     /post                                       desktop.Post.newPost
 

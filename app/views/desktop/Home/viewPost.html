@@ -6,7 +6,15 @@
 
             <div class="article viewpost">
                 <h3><a href="${post.link}">${post.title}</a> <span class="domain">${post.domain}</span></h3>
-                <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate}</span>
+                <span class="detail">posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate} | ${post.comments.size()} comments</span>
+
+            #{if session.username}
+                <div class="post-actions">
+                    <a href="">favorite</a> |
+                    <a href="">flag</a>
+                </div>
+            #{/if}
+
             </div>
 
         #{list items:post.comments, as:'comment'}

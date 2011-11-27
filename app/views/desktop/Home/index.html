@@ -22,7 +22,7 @@
                 }%
                 <div class="article">
                     <h3><a href="${post.link}">${post.title}</a> <span class="domain">(${post.domain})</span></h3>
-                    <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate} | <a href="${post.permaLink}">${post.numComments} comments</a></span>
+                    <span class="detail">posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate} | <a href="${post.permaLink}">${post.numComments} comments</a></span>
                 </div>
                 #{/list}
             </div>

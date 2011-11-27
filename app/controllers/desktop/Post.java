@@ -14,11 +14,6 @@ import play.mvc.With;
 @With(Secure.class)
 public class Post extends DesktopControllerBase {
 
-    public static void viewPost(Long id) {
-        models.Post post = models.Post.findById(id);
-        render("desktop/Home/viewPost.html", post);
-    }
-
     public static void newPost(String title, String url) {
         flash.put("title", title);
         flash.put("url", url);
@@ -39,7 +34,7 @@ public class Post extends DesktopControllerBase {
             c.post = models.Post.findById(postId);
             c.save();
         }
-        viewPost(postId);
+        Home.viewPost(postId);
     }
 
     public static void submitNewPost(String title, @CheckWith(CommonsUrlCheck.class) String url, String comment) {

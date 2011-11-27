@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,14 +48,32 @@ public class Post extends CreatedTimestampModelBase {
     }
 
     @Transient
-    public int getNumComments() {
-        return comments.size();
+    public long getNumComments() {
+        if (numComments != null) 
+            return numComments;
+        else
+            return comments.size();
     }
+    
+    @Transient
+    public Long numComments = null;
 
     public static boolean isLinkAlreadyPosted(String url) {
         Date d = new Date();
         d.setTime(System.currentTimeMillis() - (1000*60*60)*24 * 2);
         return Post.find("link = ? AND date_created >= ?", url, d).fetch().size() > 0;
+    }
+
+    public static List<Post> getPostList(int startIndex, int pageSize) {
+        List results = Post.find("SELECT p, count(c) FROM Post p JOIN FETCH p.author LEFT JOIN p.comments as c GROUP BY p.id ORDER BY p.date_created DESC").from(startIndex).fetch(pageSize);
+        List<Post> posts = new ArrayList<Post>();
+        for(Object o : results) {
+            Object[] row = (Object[])o;
+            Post p = (Post)row[0];
+            posts.add(p);
+            p.numComments = (Long)row[1];
+        }
+        return posts;
     }
 
 }
