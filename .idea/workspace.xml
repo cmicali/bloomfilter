@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9e362e1-6b5e-4989-8d5c-a3369b439150" name="Default" comment="Updates">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/desktop/images/bookmarklet.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Bootstrap.java" afterPath="$PROJECT_DIR$/app/Bootstrap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/desktop/Home.java" afterPath="$PROJECT_DIR$/app/controllers/desktop/Home.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/desktop/Post.java" afterPath="$PROJECT_DIR$/app/controllers/desktop/Post.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/Post.java" afterPath="$PROJECT_DIR$/app/models/Post.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/desktop/Home/index.html" afterPath="$PROJECT_DIR$/app/views/desktop/Home/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/desktop/Home/viewPost.html" afterPath="$PROJECT_DIR$/app/views/desktop/Home/viewPost.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/application.conf" afterPath="$PROJECT_DIR$/conf/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf/routes" afterPath="$PROJECT_DIR$/conf/routes" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/desktop/css/main.css" afterPath="$PROJECT_DIR$/public/desktop/css/main.css" />
     </list>
     <ignored path="bloomfilter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,11 +76,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="application.conf" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="application.conf" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/conf/application.conf">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="135" column="1" selection-start="4353" selection-end="4353" vertical-scroll-proportion="0.8677686">
+            <state line="135" column="1" selection-start="4353" selection-end="4353" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Post.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/models/Post.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="67" column="87" selection-start="1706" selection-end="1706" vertical-scroll-proportion="0.60330576">
+              <folding>
+                <element signature="e#1857#1863#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -118,13 +120,13 @@
         <option value="$PROJECT_DIR$/app/views/desktop/Home/viewUser.html" />
         <option value="$PROJECT_DIR$/app/Bootstrap.java" />
         <option value="$PROJECT_DIR$/app/controllers/desktop/Home.java" />
-        <option value="$PROJECT_DIR$/app/models/Post.java" />
         <option value="$PROJECT_DIR$/app/views/desktop/Home/index.html" />
         <option value="$PROJECT_DIR$/public/desktop/css/main.css" />
         <option value="$PROJECT_DIR$/app/views/desktop/Home/viewPost.html" />
         <option value="$PROJECT_DIR$/app/controllers/desktop/Post.java" />
         <option value="$PROJECT_DIR$/conf/routes" />
         <option value="$PROJECT_DIR$/conf/application.conf" />
+        <option value="$PROJECT_DIR$/app/models/Post.java" />
       </list>
     </option>
   </component>
@@ -1039,7 +1041,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32935917" sideWeight="0.63058823" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23919523" sideWeight="0.75647056" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23919523" sideWeight="0.75647056" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24352941" sideWeight="0.9992548" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1193,15 +1195,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/Post.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="39" selection-start="1932" selection-end="1932" vertical-scroll-proportion="1.4876033">
-          <folding>
-            <element signature="e#1849#1855#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/conf/routes">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="28" selection-start="858" selection-end="858" vertical-scroll-proportion="0.41262135">
@@ -1211,8 +1204,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/conf/application.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="135" column="1" selection-start="4353" selection-end="4353" vertical-scroll-proportion="0.8677686">
+        <state line="135" column="1" selection-start="4353" selection-end="4353" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/Post.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="87" selection-start="1706" selection-end="1706" vertical-scroll-proportion="0.60330576">
+          <folding>
+            <element signature="e#1857#1863#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

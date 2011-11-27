@@ -65,7 +65,7 @@ public class Post extends CreatedTimestampModelBase {
     }
 
     public static List<Post> getPostList(int startIndex, int pageSize) {
-        List results = Post.find("SELECT p, count(c) FROM Post p JOIN FETCH p.author LEFT JOIN p.comments as c GROUP BY p.id ORDER BY p.date_created DESC").from(startIndex).fetch(pageSize);
+        List results = Post.find("SELECT p, count(c) FROM Post p JOIN FETCH p.author a LEFT JOIN p.comments as c GROUP BY p.id, a.id ORDER BY p.date_created DESC").from(startIndex).fetch(pageSize);
         List<Post> posts = new ArrayList<Post>();
         for(Object o : results) {
             Object[] row = (Object[])o;
