@@ -1,7 +1,9 @@
 package controllers.desktop;
 
 import controllers.core.DesktopControllerBase;
+import models.Comment;
 import models.Post;
+import models.User;
 
 import java.util.List;
 
@@ -10,18 +12,24 @@ import java.util.List;
  */
 public class Home extends DesktopControllerBase {
 
-    public static void index(Integer page) {
-        List<Post> posts = Post.find("ORDER BY date_created DESC").fetch();
-        render("desktop/Home/index.html", posts);
+    public static int PAGE_SIZE = 25;
+    
+    public static void index(Integer start) {
+        if (start == null) start = 0;
+        List<Post> posts = Post.find("ORDER BY date_created DESC").from(start).fetch(PAGE_SIZE);
+        int next_page = start + PAGE_SIZE;
+        int prev_page = start - PAGE_SIZE;
+        if (prev_page < 0) prev_page = -1;
+        if (next_page >= Post.count()) next_page = -1;
+        render("desktop/Home/index.html", posts, next_page, prev_page);
     }
 
-    public static void login() {
-        render("desktop/Home/login.html");
+    public static void about() {
+        render("desktop/Home/about.html");
     }
 
-    public static void viewUser(Long id) {
-        render("desktop/Home/viewUser.html");
+    public static void bookmarklet() {
+        render("desktop/Home/bookmarklet.html");
     }
-
 
 }

@@ -1,5 +1,6 @@
 package controllers.core;
 
+import controllers.desktop.Application;
 import core.remoteapis.facebook.FacebookApi;
 import core.remoteapis.twitter.TwitterApi;
 import core.util.StringUtils;
@@ -14,7 +15,7 @@ import play.mvc.Scope;
 public class WebControllerBase extends ControllerBase {
 
     protected static final String KEY_USER = "user";
-    protected static final String KEY_USER_ID = "userid";
+    public static final String KEY_USER_ID = "userid";
     protected static final String KEY_USER_NAME = "username";
     protected static final String KEY_USER_DISPLAY_NAME = "userdisplayname";
     protected static final String KEY_USER_PIC = "userpic";
@@ -32,7 +33,7 @@ public class WebControllerBase extends ControllerBase {
         return ua;
     }
 
-    protected static Long getUserId() {
+    public static Long getUserId() {
         if (session.contains(KEY_USER_ID)) {
             return Long.parseLong(session.get(KEY_USER_ID));
         }
@@ -68,12 +69,16 @@ public class WebControllerBase extends ControllerBase {
     protected static boolean attemptFacebookLogin() {
         User u = FacebookApi.login();
         if (u != null) {
-            loginUser(u);
+            if (u.id == null) {
+                Application.registerSocial();
+            }
+            else {
+                loginUser(u);
+            }
             return true;
         }
         else {
             FacebookApi.logout();
-            clearSession();
             return false;
         }
 
@@ -95,7 +100,8 @@ public class WebControllerBase extends ControllerBase {
             return true;
         }
         else {
-            clearSession();
+            // User is a new user
+            Application.registerSocial();
             return false;
         }
     }

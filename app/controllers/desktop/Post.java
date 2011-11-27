@@ -19,7 +19,9 @@ public class Post extends DesktopControllerBase {
         render("desktop/Home/viewPost.html", post);
     }
 
-    public static void newPost() {
+    public static void newPost(String title, String url) {
+        flash.put("title", title);
+        flash.put("url", url);
         render("desktop/Home/newPost.html");
     }
 
@@ -46,7 +48,7 @@ public class Post extends DesktopControllerBase {
         if (validation.hasErrors()) {
             params.flash();
             validation.keep();
-            newPost();
+            newPost(title, url);
         }
         if (!(url.startsWith("http://") || url.startsWith("https://"))) {
             url = "http://" + url;

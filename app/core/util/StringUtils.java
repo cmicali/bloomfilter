@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import play.libs.Codec;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -23,41 +26,55 @@ public class StringUtils {
         return str.toLowerCase();
     }
 
-    public static String getFriendlyElapsedTimeString(long elapsedTimeMs) {
-        return String.format("%s", DurationFormatUtils.formatDurationWords(elapsedTimeMs, true, true));
+    public static String getFriendlyElapsedTimeString(Date event) 
+    {
+        long elapsedTimeMs = System.currentTimeMillis() - event.getTime();
+        String s = String.format("%s", DurationFormatUtils.formatDurationWords(elapsedTimeMs, true, true));
+        String[] parts = s.split(" ", 3);
+        if (parts.length > 2) {
+            return parts[0] + " " + parts[1];
+        }
+        else return s;
     }
 
     public static String getFriendlyTimeSinceEvent(long eventTime) {
-
-        String pattern;
-        String text;
-
         long elapsed = System.currentTimeMillis() - eventTime;
-        
-        // Less than 1 hr
-        if (elapsed < (1000 * 60) * 60) {
-            pattern = "m";
-            text = "minute";
-        }
-        else if (elapsed < (1000 * 60) * 60 * 24) {
-            pattern = "H";
-            text = "hour";
+        if (elapsed < (1000 * 60)) {
+            return "just now";
         }
         else {
-            pattern = "d";
-            text = "day";
+            return getFriendlyElapsedTimeString(new Date(eventTime)) + " ago";
         }
-        
-        int num = Integer.parseInt(DurationFormatUtils.formatPeriod(eventTime, System.currentTimeMillis(), pattern));
-        String suffix = "";
 
-        if (num > 1) {
-            suffix = "s";
-        }
-        if (num == 0)
-            return "just now";
-        else
-            return String.format("%d %s%s ago", num, text, suffix);
+//        String pattern;
+//        String text;
+//
+//        long elapsed = System.currentTimeMillis() - eventTime;
+//        
+//        // Less than 1 hr
+//        if (elapsed < (1000 * 60) * 60) {
+//            pattern = "m";
+//            text = "minute";
+//        }
+//        else if (elapsed < (1000 * 60) * 60 * 24) {
+//            pattern = "H";
+//            text = "hour";
+//        }
+//        else {
+//            pattern = "d";
+//            text = "day";
+//        }
+//        
+//        int num = Integer.parseInt(DurationFormatUtils.formatPeriod(eventTime, System.currentTimeMillis(), pattern));
+//        String suffix = "";
+//
+//        if (num > 1) {
+//            suffix = "s";
+//        }
+//        if (num == 0)
+//            return "just now";
+//        else
+//            return String.format("%d %s%s ago", num, text, suffix);
         
     }
 
@@ -83,6 +100,11 @@ public class StringUtils {
         return Codec.decodeBASE64(s);
     }
 
+    public static JsonObject parseJson(String s) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(s).getAsJsonObject();
+    }
+    
     public static JsonElement base64UrlDecodeToJson(String s) {
         try {
             String json = new String(base64UrlDecode(s), "UTF-8");

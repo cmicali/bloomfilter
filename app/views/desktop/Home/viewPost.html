@@ -6,7 +6,7 @@
 
             <div class="article viewpost">
                 <h3><a href="${post.link}">${post.title}</a> <span class="domain">${post.domain}</span></h3>
-                <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.name}</a> ${post.friendlyPostDate}</span>
+                <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate}</span>
             </div>
 
         #{list items:post.comments, as:'comment'}

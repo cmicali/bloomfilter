@@ -4,6 +4,130 @@
     <div class="row">
         <div class="span14">
 
+            <div class="viewuser">
+                <img src="${user.profile_image_url}"/>
+                <div>
+                    <h2>${user.name}</h2>
+                    <span>Member for ${user.memberSince}</span>
+                </div>
+            </div>
+
+            <div class="userdetails">
+
+                <span><span class="number">${numPosts}</span> posts</span>
+                <span><span class="number">${numComments}</span> comments</span>
+
+            </div>
+
+            #{if java.lang.Long.parseLong(session.userid) == user.id}
+
+            <h2>Details</h2>
+
+            <form action="@{desktop.User.updateDetails}" method="post">
+                <fieldset>
+                    #{if flash.detailsmessage}
+                    <div class="clearfix">
+                        <div class="alert-message success" style="margin-bottom:0;">
+                            ${flash.detailsmessage}
+                        </div>
+                    </div>
+                    #{/if}
+
+                    <div class="clearfix">
+                        <label>Username</label>
+                        <div class="input">
+                            <input class="span4" type="text" value="${user.username}" disabled="disabled" />
+                        </div>
+                    </div>
+                    <div class="clearfix#{ifError 'name'} error#{/ifError}" id="nameContainer">
+                        <label>Real name</label>
+                        <div class="input">
+                            <input class="span4" type="text" id="name" name="name" size="30" value="${flash.name}" />
+                            <span class="help-inline" id="validateNameMessage">#{error 'name'/}</span>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label>Picture URL</label>
+                        <div class="input">
+                            <input class="span8" type="text" id="pictureurl" name="pictureurl" value="${flash.pictureurl}"/>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <input type="submit" class="btn" value="Save Changes">
+                   </div>
+                </fieldset>
+            </form>
+
+            <h2>Social</h2>
+            <form action="@{desktop.Post.submitNewPost}" method="post">
+                <fieldset>
+                    <div class="clearfix">
+                        <label>Twitter</label>
+                        <div class="input">
+                            #{if user.twitterConnceted}
+                            <p>Logged in as <strong>@${user.twitter_screenname}</strong></p>
+                            #{/if}
+                            #{else}
+                                #{twitterlogin /}
+                            #{/else}
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <label>Facebook</label>
+                        <div class="input">
+                            #{if user.facebookConnected}
+                                <p>Logged in as <strong>${user.facebook_name}</strong></p>
+                            #{/if}
+                            #{else}
+                                #{facebooklogin /}
+                            #{/else}
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+            <h2>Change Password</h2>
+
+            <form action="@{desktop.User.updatePassword}" method="post">
+                <fieldset>
+                    #{if flash.pwmessage}
+                    <div class="clearfix">
+                        <div class="alert-message success" style="margin-bottom:0;">
+                            ${flash.pwmessage}
+                        </div>
+                    </div>
+                    #{/if}
+                    <div class="clearfix#{ifError 'password'} error#{/ifError}" id="passwordContainer">
+                        <label for="password">Current password</label>
+                        <div class="input">
+                            <input class="span4" id="password" name="password" size="30" type="password" value="${flash.password}">
+                            <span class="help-inline" id="validatePasswordMessage">#{error 'password'/}</span>
+                        </div>
+                    </div>
+                    <div class="clearfix#{ifError 'newPassword'} error#{/ifError}" id="newPasswordContainer">
+                        <label for="password">New password</label>
+                        <div class="input">
+                            <input class="span4" id="newPassword" name="newPassword" size="30" type="password" value="${flash.newPassword}">
+                            <span class="help-inline" id="validateNewPasswordMessage">#{error 'newPassword'/}</span>
+                        </div>
+                    </div>
+                    <div class="clearfix#{ifError 'passwordConfirm'} error#{/ifError}" id="passwordConfirmContainer">
+                        <label for="password">Confirm</label>
+                        <div class="input">
+                            <input class="span4" id="passwordConfirm" name="passwordConfirm" size="30" type="password" value="${flash.passwordConfirm}">
+                            <span class="help-inline" id="validatePasswordConfirmMessage">#{error 'passwordConfirm'/}</span>
+                        </div>
+                    </div>
+                    <div class="input">
+                        <input type="submit" class="btn" value="Change Password">
+                   </div>
+                </fieldset>
+            </form>
+
+            #{/if}
+            #{else}
+
+            #{/else}
 
         </div>
     </div>

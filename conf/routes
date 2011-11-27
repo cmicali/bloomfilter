@@ -3,33 +3,38 @@
 
 GET     /                                           desktop.Home.index
 
+GET     /about                                      desktop.Home.about
+GET     /bookmarklet                                desktop.Home.bookmarklet
+
 GET     /posts/{<[0-9]+>id}                         desktop.Post.viewPost
 GET     /posts/{<[0-9]+>id}_{title}                 desktop.Post.viewPost
 POST    /posts/submitcomment                        desktop.Post.submitNewComment
-
-GET     /users/{<[0-9]+>id}                         desktop.Home.viewUser
 GET     /post                                       desktop.Post.newPost
+
+GET     /users/{<[0-9]+>id}                         desktop.User.viewUser
+POST    /users/updatedetails                        desktop.User.updateDetails
+POST    /users/updatepassword                       desktop.User.updatePassword
 
 POST    /post/submit                                desktop.Post.submitNewPost
 
 GET     /facebooklogin                              desktop.Application.facebookLogin
 GET     /twitterlogin                               desktop.Application.twitterLogin
 GET     /finishTwitterLogin                         desktop.Application.finishTwitterLogin
-GET     /login                                      desktop.Home.login
-GET     /secure/login                               desktop.Home.login
-GET     /logout                                     desktop.Application.logout
 
 GET     /public/                                    staticDir:public
+GET     /favicon.ico                                staticFile:public/desktop/images/favicon.png
 
-# Ignore favicon requests
-GET     /favicon.ico                                404
+POST    /register                                   desktop.Application.registerUser
+GET     /register                                   desktop.Application.register
+GET     /registersocial                             desktop.Application.registerSocial
+POST    /registersocial                             desktop.Application.completeSocialRegistration
+*       /                                           module:secure
 
 ####################################################
 ##### API Routes
 
 GET     /api/posts/validateurl                      api.PostsApi.validateUrl
-
-
+GET     /api/users/validateusername                 api.UsersApi.validateUsername
 
 # Catch all
 #*       /{controller}/{action}                  {controller}.{action}

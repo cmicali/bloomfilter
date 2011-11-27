@@ -3,7 +3,8 @@ package models;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import core.remoteapis.twitter.TwitterUser;
-import models.core.ModelBase;
+import core.util.StringUtils;
+import models.core.CreatedTimestampModelBase;
 import models.core.SerializableToJson;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,19 +20,16 @@ import java.util.List;
 @Table(name = "PUser")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends ModelBase implements Serializable {
+public class User extends CreatedTimestampModelBase implements Serializable {
 
+    @Column(nullable = false)
+    public String username;
+    @Column(nullable = true)
+    public String password;
     @Column(nullable = false)
     public String name;
     @Column(nullable = true)
-    public String first_name;
-    @Column(nullable = true)
-    public String last_name;
-
-    @Column(nullable = true)
     public String profile_image_url;
-    @Column(nullable = true)
-    public String username;
 
     @Column(nullable = true)
     public String facebook_id;
@@ -39,6 +37,8 @@ public class User extends ModelBase implements Serializable {
     public String facebook_username;
     @Column(nullable = true)
     public String facebook_auth_token;
+    @Column(nullable = true)
+    public String facebook_name;
 
     @Column(nullable = true)
     public Long twitter_userid;
@@ -56,53 +56,53 @@ public class User extends ModelBase implements Serializable {
     @Column(nullable = true)
     public String locale;
 
-    // TODO: Make this dynamic
-    public String device_type = "iphone";
-
-    @Column(nullable = true)
-    public String apns_push_token;
-
     @Transient
     public Boolean is_new;
 
-    public User(String name, String first_name, String last_name, String email, String gender, String locale) {
+    @Transient
+    public boolean isTwitterConnceted() {
+        return twitter_userid != null && twitter_userid > 0;
+    }
+
+    @Transient
+    public boolean isFacebookConnected() {
+        return StringUtils.isNotEmpty(facebook_id);
+    }
+
+    @Transient
+    public String getMemberSince() {
+        return StringUtils.getFriendlyElapsedTimeString(date_created);
+//        DateFormat fmt = new SimpleDateFormat("MMMM d, yyyy");
+//        return fmt.format(date_created);
+    }
+
+    public User() {
+    }
+
+    public User(String name, String email, String gender, String locale) {
         this.name = name;
-        this.first_name = first_name;
-        this.last_name = last_name;
         this.email = email;
         this.gender = gender;
         this.locale = locale;
     }
 
-    public User(com.restfb.types.User fbUser) {
+    public User(com.restfb.types.User fbUser) {        
+        updateFacebookDetails(fbUser);
         this.name = fbUser.getName();
-        this.first_name = fbUser.getFirstName();
-        this.last_name = fbUser.getLastName();
-        this.facebook_id = fbUser.getId();
-        this.facebook_username = fbUser.getUsername();
         this.username = fbUser.getUsername();
-        this.profile_image_url = "http://graph.facebook.com/" + facebook_username + "/picture?type=square";
         this.email = fbUser.getEmail();
         this.gender = fbUser.getGender();
         this.locale = fbUser.getLocale();
     }
 
     public User(TwitterUser twUser) {
+        updateTwitterDetails(twUser);
         this.name = twUser.name;
-        this.twitter_userid = twUser.user_id;
-        this.twitter_screenname = twUser.screen_name;
-        this.twitter_token = twUser.token;
-        this.twitter_secret = twUser.secret;
-        this.first_name = twUser.first_name;
-        this.last_name = twUser.last_name;
         this.username = twitter_screenname;
-        this.profile_image_url = "https://api.twitter.com/1/users/profile_image?screen_name=" + twitter_screenname + "&size=bigger";
     }
         
     public User(User u) {
         this.name = u.name;
-        this.first_name = u.first_name;
-        this.last_name = u.last_name;
         this.facebook_id = u.facebook_id;
         this.facebook_username = u.facebook_username;
         this.email = u.email;
@@ -110,10 +110,27 @@ public class User extends ModelBase implements Serializable {
         this.locale = u.locale;
     }
 
+    public void updateTwitterDetails(TwitterUser twUser) {
+        this.twitter_userid = twUser.user_id;
+        this.twitter_screenname = twUser.screen_name;
+        this.twitter_token = twUser.token;
+        this.twitter_secret = twUser.secret;
+        if (StringUtils.isEmpty(profile_image_url)) {
+            this.profile_image_url = twUser.getPictureUrl();
+        }
+    }
+    
+    public void updateFacebookDetails(com.restfb.types.User fbUser) {
+        this.facebook_id = fbUser.getId();
+        this.facebook_username = fbUser.getUsername();
+        this.facebook_name = fbUser.getName();
+        if (StringUtils.isEmpty(profile_image_url)) {
+            this.profile_image_url = "http://graph.facebook.com/" + facebook_username + "/picture?type=square";            
+        }
+    }
+    
     public JsonObject toJson(SerializableToJson.JsonResponseType type) {
         JsonObject jo = super.toJson(type);
-        jo.addProperty("first_name", first_name);
-        jo.addProperty("last_name", last_name);
         // jo.addProperty("picture", pictureUrl);
         jo.addProperty("facebook_id", facebook_id);
         jo.addProperty("facebook_username", facebook_username);

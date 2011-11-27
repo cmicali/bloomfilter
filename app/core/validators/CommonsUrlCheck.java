@@ -18,7 +18,8 @@ public class CommonsUrlCheck extends Check {
     @Override
     public boolean isSatisfied(Object validatedObject, Object value) {
         if (value == null || value.toString().length() == 0) {
-            return true;
+            setMessage("Required");
+            return false;
         }
         String url = value.toString();
         if (! (url.startsWith("http://") || url.startsWith("https://"))) {

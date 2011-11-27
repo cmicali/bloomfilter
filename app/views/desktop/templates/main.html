@@ -14,7 +14,7 @@
         <link rel="stylesheet" media="screen" href="@{'/public/desktop/css/main.css'}">
         #{get 'moreStyles' /}
 
-        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <link rel="shortcut icon" type="image/png" href="@{'/public/desktop/images/favicon.png'}">
         <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
         <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
         <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
@@ -32,6 +32,7 @@
             %{
                 fbAppId = play.configuration.getProperty("facebook.appId");
                 fbPerms = play.configuration.getProperty("facebook.perms");
+                fbSite = play.configuration.getProperty("application.site");
             }%
 
             bloomfilter.fbAppId = '${fbAppId}';
@@ -42,7 +43,7 @@
                             status: true,
                             cookie: true,
                             xfbml: true,
-                            channelUrl: 'http://bloomfilter.com:9000/public/ChannelFile.html',
+                            channelUrl: '${fbSite}/public/ChannelFile.html',
                             oauth: true
                 });
                 FB.getLoginStatus(function(response) {
@@ -55,7 +56,7 @@
             };
 
 			function logout() {
-                    window.location = "@{desktop.Application.logout()}";
+                    window.location = "@{Secure.logout()}";
 			}
 
             function facebookLogin() {                
@@ -82,13 +83,16 @@
         <div id="top-nav">
             <span class="login">
             #{if session.username}
-                <strong>${session.userdisplayname}</strong> | <a href="/logout">logout</a>
+                #{a @desktop.User.viewUser(session.userid)}<strong>${session.username}</strong>#{/a} | #{a @Secure.logout()}logout#{/a}
             #{/if}
             #{else}
-                <a href="/login">login</a>
+                <a href="@{Secure.login()}">login</a> | #{a @desktop.Application.register()}register#{/a}
             #{/else}
             </span>
-            <h1><a href="/">bloomfilter</a></h1>
+            <a href="/" class="logo">
+                <img src="/public/desktop/images/logo.png" />
+                <h1>bloomfilter</h1>
+            </a>
         </div>
 
         <div class="topbar-wrapper" style="z-index: 5;">
@@ -135,7 +139,7 @@
         #{doLayout /}
 
         <footer>
-          *{<p>&copy; 2011 bloomfilter | <a href="/about">About</a></p>}*
+          <p>&copy; 2011 bloomfilter | <a href="/bookmarklet">bookmarklet</a> | <a href="/about">about</a> </p>
         </footer>
 
     </div></body>

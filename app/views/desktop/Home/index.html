@@ -2,6 +2,7 @@
 #{set title:'bloomfilter' /}
 <div class="content">
     <div class="row">
+
         <div class="span12">
 
             <div class="article-list">
@@ -21,7 +22,7 @@
                 }%
                 <div class="article">
                     <h3><a href="${post.link}">${post.title}</a> <span class="domain">(${post.domain})</span></h3>
-                    <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.name}</a> ${post.friendlyPostDate} | <a href="${post.permaLink}">${post.numComments} comments</a></span>
+                    <span class="detail">Posted by <a href="/users/${post.author.id}">${post.author.username}</a> ${post.friendlyPostDate} | <a href="${post.permaLink}">${post.numComments} comments</a></span>
                 </div>
                 #{/list}
             </div>
@@ -38,14 +39,32 @@
               *{</ul>}*
             *{</div>}*
 
+            #{if prev_page >= 0 || next_page >= 0}
+            <div class="pagenav">
+                #{if prev_page >= 0}
+                <span>
+                    <a href="/?start=${prev_page}">&lt; Newer Posts</a>
+                </span>
+                #{if next_page >= 0}
+                <span>|</span>
+                #{/if}
+                #{/if}
+                #{if next_page >= 0}
+                <span>
+                    <a href="/?start=${next_page}">Older Posts &gt;</a>
+                </span>
+                #{/if}
+            </div>
+            #{/if}
         </div>
 
         <div class="span2 sidebar">
-
-            #{if session.username}
-            <a href="@{desktop.Post.newPost}" class="btn">New Post</a>
-            #{/if}
-
+            <input type="text" class="searchbox"/>
+            <div class="clearfix">
+                #{if session.username}
+                <a href="@{desktop.Post.newPost}" class="btn">New Post</a>
+                #{/if}
+            </div>
         </div>
 
     </div>

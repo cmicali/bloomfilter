@@ -1,8 +1,7 @@
 package core.remoteapis.twitter;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import core.util.Log;
+import controllers.core.WebControllerBase;
+import core.util.StringUtils;
 import models.User;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
@@ -12,8 +11,8 @@ import org.scribe.oauth.OAuthService;
 import play.Play;
 import play.cache.Cache;
 import play.data.parsing.UrlEncodedParser;
-import play.libs.WS;
 import play.mvc.Router;
+import play.mvc.Scope;
 
 
 import java.util.Map;
@@ -23,6 +22,8 @@ import java.util.Map;
  */
 public class TwitterApi {
 
+    public static String SESSION_USER = "twuser";
+    
     private static String AUTHORIZE_URL = "http://twitter.com/oauth/authorize";
     private static String ACCESS_TOKEN_URL = "http://twitter.com/oauth/access_token";
 
@@ -65,6 +66,9 @@ public class TwitterApi {
     }
 
     public static User finishTwitterLogin(String oauth_token, String oauth_verifier) {
+        if (StringUtils.isEmpty(oauth_token) || StringUtils.isEmpty(oauth_verifier)) {
+            return null;
+        }
         Verifier verifier = new Verifier(oauth_verifier);
         Token requestToken = (Token) Cache.get(oauth_token);
         Token accessToken = getService().getAccessToken(requestToken, verifier);
@@ -80,8 +84,17 @@ public class TwitterApi {
             TwitterUser twUser = TwitterUser.fetch(screenName);
             twUser.token = token;
             twUser.secret = secret;
-            u = new User(twUser);
-            u.save();
+
+            String userid = Scope.Session.current().get(WebControllerBase.KEY_USER_ID);
+            if (StringUtils.isNotEmpty(userid)) {
+                u = User.findById(Long.parseLong(userid));
+                u.updateTwitterDetails(twUser);
+                u.save();
+            }
+            else {
+                Scope.Session.current().put(SESSION_USER, twUser.toString());
+//                u = new User(twUser);
+            }
         }
 
         return u;

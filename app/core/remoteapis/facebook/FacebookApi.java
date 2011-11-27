@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
+import controllers.core.WebControllerBase;
 import core.util.StringUtils;
 import models.User;
 import play.Play;
@@ -18,6 +19,7 @@ public class FacebookApi {
 
     public static String KEY_FACEBOOK_USER_ID = "facebook_id";
     public static String KEY_FACEBOOK_USER_NAME = "facebook_username";
+    public static String KEY_FACEBOOK_FULLNAME = "facebook_fullname";
     public static String KEY_FACEBOOK_ACCESS_TOKEN = "facebook_access_token";
 
     private static OAuth2 FACEBOOK = new OAuth2(
@@ -49,8 +51,16 @@ public class FacebookApi {
             String authToken = getAuthToken();
             User u = User.findByFacebookId(userId);
             if (u == null) {
-                u = new User(FacebookApi.getClient().fetchObject("me", com.restfb.types.User.class));
-                u.save();
+                String userid = Scope.Session.current().get(WebControllerBase.KEY_USER_ID);
+                com.restfb.types.User fbUser = FacebookApi.getClient().fetchObject("me", com.restfb.types.User.class);
+                if (StringUtils.isNotEmpty(userid)) {
+                    u = User.findById(Long.parseLong(userid));
+                    u.updateFacebookDetails(fbUser);
+                    u.save();
+                }
+                else {
+                    u = new User(fbUser);
+                }
             }
             else {
                 if (!authToken.equals(u.facebook_auth_token)) {
@@ -61,6 +71,7 @@ public class FacebookApi {
             Scope.Session.current().put(KEY_FACEBOOK_ACCESS_TOKEN, u.facebook_auth_token);
             Scope.Session.current().put(KEY_FACEBOOK_USER_ID, u.facebook_id);
             Scope.Session.current().put(KEY_FACEBOOK_USER_NAME, u.facebook_username);
+            Scope.Session.current().put(KEY_FACEBOOK_FULLNAME, u.name);
             return u;
         }
         catch(Exception ex) {
@@ -74,6 +85,7 @@ public class FacebookApi {
         Scope.Session.current().remove(KEY_FACEBOOK_ACCESS_TOKEN);
         Scope.Session.current().remove(KEY_FACEBOOK_USER_ID);
         Scope.Session.current().remove(KEY_FACEBOOK_USER_NAME);
+        Scope.Session.current().remove(KEY_FACEBOOK_FULLNAME);
     }
 
     public static String getUserId() {

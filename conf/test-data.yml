@@ -2,12 +2,18 @@ User(cmicali):
   name:         Chris Micali
   first_name:   Chris
   last_name:    Micali
-  facebook_id:  534910201
-  facebook_username: chrismicali
   username:     chrismicali
   email:        chrismicali@gmail.com
   gender:       male
   locale:       en-US
+  profile_image_url: http://graph.facebook.com/chrismicali/picture?type=square
+  facebook_id:  534910201
+  facebook_name: Chris Micali
+  facebook_username: chrismicali
+  twitter_screenname: cmicali
+  twitter_secret: cDm7ga4sXLtBxC48l4y1UkxsNmrj4IK9C2E6daJzYQw
+  twitter_token: 16346338-crhhzl4KDbXb1iy7gSABmtj0603QgMMdhPKGTlXXX
+  twitter_userid: 16346338
 
 Post(post1):
     author: cmicali
