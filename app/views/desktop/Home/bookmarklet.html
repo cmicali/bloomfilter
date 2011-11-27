@@ -9,8 +9,8 @@
 
             <p>Add the bloomfilter bookmarklet to your browser&apos;s bookmarks bar to quickly post links to bloomfilter. </p>
             <p>To add the bookmarklet <strong>drag</strong> the link below onto your bookmark bar.</p>
-            
-            <a title="post to bloomfilter" href="javascript:(function(){ url = 'http://localhost:9000/post?title=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(window.location.href); a = function() { location.href = url; }; if (/Firefox/.test(navigator.userAgent)){setTimeout(a, 0);}else{a();} })();">
+
+            <a title="post to bloomfilter" href="javascript:(function(){ url = '${play.configuration.getProperty("application.site")}/post?title=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(window.location.href); a = function() { location.href = url; }; if (/Firefox/.test(navigator.userAgent)){setTimeout(a, 0);}else{a();} })();">
                 <img src="/public/desktop/images/bookmarklet.png" alt="post to bloomfilter"/>
             </a>
 
