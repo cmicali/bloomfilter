@@ -33,7 +33,8 @@ public class Home extends DesktopControllerBase {
     }
 
     public static void viewPost(Long id) {
-        Post post = Post.find("SELECT p FROM Post p JOIN FETCH p.author JOIN FETCH p.comments WHERE p.id = ? ", id).first();
+//        Post post = Post.find("SELECT p FROM Post p JOIN FETCH p.author JOIN FETCH p.comments WHERE p.id = ? ", id).first();
+        Post post = Post.find("SELECT p FROM Post p JOIN FETCH p.author WHERE p.id = ? ", id).first();
         render("desktop/Home/viewPost.html", post);
     }
 }
